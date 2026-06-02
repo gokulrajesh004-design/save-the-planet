@@ -24,7 +24,6 @@
 /* ── RESPONSIVE ── */
 
 
-
 html,body{height:100%;height:-webkit-fill-available;overflow:hidden;overscroll-behavior:none}
 body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
   position:relative;max-width:430px;margin:0 auto;overflow:hidden}
@@ -45,10 +44,8 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .ipill{background:rgba(255,255,255,0.12);color:rgba(255,252,240,0.85);font-size:10px;font-weight:700;
   letter-spacing:3px;padding:6px 14px;border-radius:100px;margin-bottom:14px;
   display:inline-block;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(8px)}
-.iplanet-slot{margin:0 auto 12px;width:56px;height:56px}
-.ih1{font-family:"Fraunces",serif;font-size:32px;font-weight:900;
-  color:rgba(255,255,255,1);letter-spacing:-.02em;line-height:1.05;
-  text-shadow:0 2px 24px rgba(0,0,0,0.85),0 1px 6px rgba(0,0,0,0.7)}
+
+
 .ih2{font-family:"Fraunces",serif;font-size:14px;font-weight:700;
   font-style:italic;color:rgba(160,230,100,1);margin:3px 0 10px;
   text-shadow:0 1px 12px rgba(0,0,0,0.8),0 0 24px rgba(0,0,0,0.6);letter-spacing:.02em}
@@ -195,7 +192,7 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .slvl.ach{background:rgba(74,122,32,0.22)}
 .slvl.cur{background:rgba(28,42,16,0.75);backdrop-filter:blur(8px)}
 .slvl.ahe{opacity:.22}
-.slvl-ic{font-size:17px;display:block;margin-bottom:3px}
+
 .slvl-nm{font-size:11px;font-weight:700;color:rgba(255,252,240,0.9);
   line-height:1.25;display:block}
 .slvl.cur .slvl-nm{color:var(--amber)}
@@ -212,10 +209,7 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .rquote{font-family:"Fraunces",serif;font-size:21px;font-weight:700;
   font-style:italic;color:rgba(255,252,240,0.95);line-height:1.35;margin-bottom:18px;
   text-shadow:0 2px 16px rgba(0,0,0,0.4)}
-.btnsh{width:100%;background:rgba(255,252,240,0.95);color:var(--forest);border:none;
-  padding:14px;border-radius:100px;font-size:14px;font-weight:700;
-  font-family:"DM Sans",sans-serif;cursor:pointer;margin-bottom:9px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.35);transition:transform .12s}
+
 .btnsh:active{transform:scale(.97)}
 .btnrt{width:100%;background:rgba(255,255,255,0.1);color:rgba(240,232,208,0.7);
   border:1.5px solid rgba(255,255,255,0.2);padding:12px;
@@ -504,10 +498,6 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 #result-char svg{width:100%;height:100%;object-fit:contain}
 
 
-
-
-
-
 /* ── CERT BANNER ── */
 .cert-banner{
   display:flex;align-items:center;gap:12px;
@@ -609,9 +599,8 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
     <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border-radius:16px;">
       <canvas id="cert-canvas" style="width:100%;min-height:200px;display:block;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5)"></canvas>
     </div>
-    <div style="flex-shrink:0;display:flex;gap:10px;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));">
-      <button onclick="downloadCert()" id="cert-dl-btn" style="flex:2;background:rgba(252,198,42,0.95);color:#1A1000;border:none;padding:14px;border-radius:100px;font-size:14px;font-weight:700;font-family:DM Sans,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(252,198,42,0.3);">&#11015; Download</button>
-      <button onclick="closeCert()" style="flex:1;background:rgba(255,255,255,0.08);color:rgba(240,232,208,0.8);border:1px solid rgba(255,255,255,0.12);padding:14px;border-radius:100px;font-size:13px;font-weight:600;font-family:DM Sans,sans-serif;cursor:pointer;">Close</button>
+    <div style="flex-shrink:0;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;">
+      <button onclick="closeCert()" style="background:rgba(255,255,255,0.10);color:rgba(240,232,208,0.85);border:1px solid rgba(255,255,255,0.15);padding:13px 48px;border-radius:100px;font-size:14px;font-weight:600;font-family:DM Sans,sans-serif;cursor:pointer;">Close</button>
     </div>
   </div>
 </div>
@@ -5233,8 +5222,6 @@ window.addEventListener("load", function(){
 });
 
 
-
-
 // ── CERTIFICATE ──
 var _certName = "";
 
@@ -5473,226 +5460,6 @@ function drawCertificate(){
   ctx.fillText("thesmartq.com  \u00B7  Act to Impact  \u00B7  Environment Day",W/2,FT_Y);
 }
 
-function closeCertPreview(){
-  var p=document.getElementById("cert-img-preview");
-  if(p){ p.style.display="none"; }
-}
-
-function isInAppBrowser(){
-  var ua=navigator.userAgent||"";
-  // Known social/productivity in-app browsers
-  if(/Instagram|FBAN|FBAV|LinkedInApp|WhatsApp|Slack|Twitter|Line\/|MicroMessenger|Snapchat/i.test(ua)) return true;
-  // Android WebView: explicit wv flag OR missing Chrome build number
-  if(/Android/i.test(ua) && (/wv/i.test(ua) || !/Chrome\/\d/.test(ua))) return true;
-  // iOS native WebView (WKWebView): AppleWebKit present but no "Safari/" token
-  // React Native, Capacitor, Flutter all strip "Safari/" from the UA string
-  if(/iPhone|iPad|iPod/.test(ua) && /AppleWebKit/.test(ua) && !/Safari\//.test(ua)) return true;
-  // Capacitor or Cordova bridge present — definitely running inside native shell
-  if(typeof window.Capacitor !== "undefined" || typeof window.cordova !== "undefined") return true;
-  return false;
-}
-
-function isMobileDevice(){
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"");
-}
-
-function showCertPreview(dataUrl){
-  var prev=document.getElementById("cert-img-preview");
-  if(!prev){
-    prev=document.createElement("div");
-    prev.id="cert-img-preview";
-    prev.style.cssText="position:fixed;inset:0;z-index:19999;background:rgba(0,0,0,0.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;gap:14px;-webkit-overflow-scrolling:touch;overflow-y:auto;";
-    document.body.appendChild(prev);
-  }
-  prev.innerHTML=
-    '<p style="color:rgba(255,252,240,0.9);font-size:13px;font-weight:600;text-align:center;font-family:DM Sans,sans-serif;margin:0;line-height:1.5">Press &amp; hold the image,<br>then tap <strong>Save to Photos</strong> or <strong>Download Image</strong></p>'
-    +'<img id="cert-preview-img" style="max-width:100%;width:100%;border-radius:12px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.6)" />'
-    +'<button onclick="closeCertPreview()" style="background:rgba(255,255,255,0.12);color:rgba(255,252,240,0.85);border:1px solid rgba(255,255,255,0.2);padding:12px 36px;border-radius:100px;font-size:14px;font-family:DM Sans,sans-serif;cursor:pointer;flex-shrink:0">Close</button>';
-  document.getElementById("cert-preview-img").src=dataUrl;
-  prev.style.display="flex";
-}
-// ──────────────────────────────────────────────────────────────────
-// CERTIFICATE DOWNLOAD
-// Escalation ladder:
-//   1. Native bridge (if app team has injected it) → instant one-tap save
-//   2. Web Share API (iOS WKWebView + modern Android WebView)      → share sheet → Save to Photos
-//   3. Anchor download (desktop + WebViews with download listener) → direct save
-//   4. Hard fail with a toast (never the press-and-hold overlay, never a fake "✅ Saved!")
-//
-// Native bridge contract (for the iOS / Android app teams):
-//   Provide ANY ONE of the following on `window`, set before the page is rendered:
-//
-//   (a) window.SmartQAppBridge.saveImage(dataUrlOrBase64, filename)
-//       — preferred unified interface. Implement on both platforms.
-//
-//   (b) iOS WKWebView raw:
-//       webView.configuration.userContentController.add(handler, name: "saveImage")
-//       JS will call: window.webkit.messageHandlers.saveImage.postMessage({data, filename})
-//
-//   (c) Android WebView raw:
-//       webView.addJavascriptInterface(bridge, "AndroidBridge")
-//       with method: @JavascriptInterface fun saveImage(dataUrl: String, filename: String)
-//
-//   The bridge should: decode the data URL → write to Photos/Pictures →
-//   call back via window.SmartQAppBridge.onSaveComplete(ok, errorMsg) if it wants
-//   the JS to reflect success/failure. If no callback comes within 4s the JS
-//   assumes success and resets the button — so the bridge SHOULD call back.
-// ──────────────────────────────────────────────────────────────────
-
-function downloadCert(){
-  var cv=document.getElementById("cert-canvas");
-  if(!cv) return;
-  var btn=document.getElementById("cert-dl-btn");
-  if(btn){ btn.innerHTML="Saving..."; btn.disabled=true; }
-
-  var fname=(_certName&&_certName.length>0)
-    ? "SaveThePlanet_"+_certName.replace(/[^a-zA-Z0-9]/g,"_")+".png"
-    : "SaveThePlanet_Certificate.png";
-
-  // Redraw to ensure logo is painted
-  drawCertificate();
-
-  var resetBtn=function(label){
-    if(!btn) return;
-    btn.innerHTML=label||"&#11015; Download";
-    btn.disabled=false;
-  };
-  var markSaved=function(){
-    resetBtn("✅ Saved!");
-    setTimeout(function(){ resetBtn(); },2500);
-  };
-  var markFailed=function(msg){
-    resetBtn();
-    if(typeof showToast==="function") showToast(msg||"Couldn't save — please try again",2800);
-  };
-
-  // ── Native bridge detection ──
-  var tryNativeBridge=function(dataUrl){
-    // Pattern A: unified bridge
-    try{
-      if(window.SmartQAppBridge && typeof window.SmartQAppBridge.saveImage==="function"){
-        // Optional callback — bridge can call this to confirm/deny
-        window.SmartQAppBridge.onSaveComplete=function(ok,err){
-          if(ok!==false) markSaved();
-          else markFailed(err||"Save failed");
-        };
-        window.SmartQAppBridge.saveImage(dataUrl, fname);
-        // Safety net: if no callback in 4s, assume success
-        setTimeout(function(){
-          if(btn && btn.disabled){ markSaved(); }
-        },4000);
-        return true;
-      }
-    }catch(_){}
-    // Pattern B: iOS WKWebView raw script-message handler
-    try{
-      if(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.saveImage){
-        window.webkit.messageHandlers.saveImage.postMessage({data:dataUrl, filename:fname});
-        // No callback channel here by default — optimistic success after short delay
-        setTimeout(markSaved, 800);
-        return true;
-      }
-    }catch(_){}
-    // Pattern C: Android addJavascriptInterface
-    try{
-      if(window.AndroidBridge && typeof window.AndroidBridge.saveImage==="function"){
-        window.AndroidBridge.saveImage(dataUrl, fname);
-        setTimeout(markSaved, 800);
-        return true;
-      }
-    }catch(_){}
-    return false;
-  };
-
-  // ── Web Share API path (iOS WKWebView + most Android WebViews) ──
-  var tryShareSheet=function(done){
-    if(!cv.toBlob || typeof navigator.share!=="function" || typeof navigator.canShare!=="function"){
-      done(false); return;
-    }
-    cv.toBlob(function(blob){
-      if(!blob){ done(false); return; }
-      try{
-        var file=new File([blob], fname, {type:"image/png"});
-        if(!navigator.canShare({files:[file]})){ done(false); return; }
-        navigator.share({files:[file], title:"My SmartQ Planet Certificate"})
-          .then(function(){ done(true); })
-          .catch(function(err){
-            // User cancelling the sheet is not a failure — don't downgrade to next path
-            if(err && (err.name==="AbortError" || /cancel/i.test(err.message||""))){
-              done("cancelled");
-            } else {
-              done(false);
-            }
-          });
-      }catch(_){ done(false); }
-    },"image/png");
-  };
-
-  // ── Anchor download path (desktop + WebViews with download listener configured) ──
-  var anchorClick=function(href, revoke){
-    var a=document.createElement("a");
-    a.href=href; a.download=fname; a.rel="noopener"; a.style.display="none";
-    document.body.appendChild(a);
-    try{ a.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,view:window})); }
-    catch(_){ a.click(); }
-    document.body.removeChild(a);
-    if(revoke){ setTimeout(function(){ URL.revokeObjectURL(href); },1500); }
-  };
-  var tryAnchorDownload=function(done){
-    try{
-      if(cv.toBlob){
-        cv.toBlob(function(blob){
-          if(!blob){
-            try{ anchorClick(cv.toDataURL("image/png"), false); done(true); }
-            catch(_){ done(false); }
-            return;
-          }
-          try{
-            anchorClick(URL.createObjectURL(blob), true);
-            done(true);
-          }catch(_){ done(false); }
-        },"image/png");
-      } else {
-        anchorClick(cv.toDataURL("image/png"), false);
-        done(true);
-      }
-    }catch(_){ done(false); }
-  };
-
-  setTimeout(function(){
-    var dataUrl=null;
-    try{ dataUrl=cv.toDataURL("image/png"); }catch(_){}
-
-    // STEP 1 — Native bridge if the app team has wired it
-    if(dataUrl && tryNativeBridge(dataUrl)){
-      return; // bridge handles button reset via markSaved / callback
-    }
-
-    // STEP 2 — In-app WebView OR mobile: share sheet (anchor would silently fail in unconfigured WKWebView)
-    var onMobile=(typeof isMobileDevice==="function" && isMobileDevice());
-    var inApp=(typeof isInAppBrowser==="function" && isInAppBrowser());
-
-    if(onMobile || inApp){
-      tryShareSheet(function(result){
-        if(result===true){ markSaved(); return; }
-        if(result==="cancelled"){ resetBtn(); return; }   // user dismissed sheet — silent reset
-        // Share sheet unavailable → try anchor (works if Android WebView has setDownloadListener)
-        tryAnchorDownload(function(ok){
-          if(ok) markSaved();
-          else markFailed("Couldn't save — update the app or try in your browser");
-        });
-      });
-      return;
-    }
-
-    // STEP 3 — Desktop / regular browsers
-    tryAnchorDownload(function(ok){
-      if(ok) markSaved();
-      else markFailed();
-    });
-  },600);
-}
-
 
 // ── ENGAGEMENT HELPERS ──
 
@@ -5878,12 +5645,6 @@ function launchConfetti(score){
 // ── CHARACTER HELPERS ──
 
 
-
-
-
-
-
-
 // ── CANVAS PLANET CHARACTERS ──
 // 0=Observer(dead), 1=Conscious(ocean), 2=ChangeMaker(healing), 3=Guardian(thriving)
 var PLANET_CONFIGS = [
@@ -5980,7 +5741,6 @@ function renderScaleChars(n){
 }
 
 </script>
-
 
 
 </body>
