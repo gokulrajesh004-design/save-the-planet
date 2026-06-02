@@ -5511,6 +5511,34 @@ function showCertPreview(dataUrl){
   document.getElementById("cert-preview-img").src=dataUrl;
   prev.style.display="flex";
 }
+// ──────────────────────────────────────────────────────────────────
+// CERTIFICATE DOWNLOAD
+// Escalation ladder:
+//   1. Native bridge (if app team has injected it) → instant one-tap save
+//   2. Web Share API (iOS WKWebView + modern Android WebView)      → share sheet → Save to Photos
+//   3. Anchor download (desktop + WebViews with download listener) → direct save
+//   4. Hard fail with a toast (never the press-and-hold overlay, never a fake "✅ Saved!")
+//
+// Native bridge contract (for the iOS / Android app teams):
+//   Provide ANY ONE of the following on `window`, set before the page is rendered:
+//
+//   (a) window.SmartQAppBridge.saveImage(dataUrlOrBase64, filename)
+//       — preferred unified interface. Implement on both platforms.
+//
+//   (b) iOS WKWebView raw:
+//       webView.configuration.userContentController.add(handler, name: "saveImage")
+//       JS will call: window.webkit.messageHandlers.saveImage.postMessage({data, filename})
+//
+//   (c) Android WebView raw:
+//       webView.addJavascriptInterface(bridge, "AndroidBridge")
+//       with method: @JavascriptInterface fun saveImage(dataUrl: String, filename: String)
+//
+//   The bridge should: decode the data URL → write to Photos/Pictures →
+//   call back via window.SmartQAppBridge.onSaveComplete(ok, errorMsg) if it wants
+//   the JS to reflect success/failure. If no callback comes within 4s the JS
+//   assumes success and resets the button — so the bridge SHOULD call back.
+// ──────────────────────────────────────────────────────────────────
+
 function downloadCert(){
   var cv=document.getElementById("cert-canvas");
   if(!cv) return;
@@ -5529,75 +5557,139 @@ function downloadCert(){
     btn.innerHTML=label||"&#11015; Download";
     btn.disabled=false;
   };
-
-  // Unified click-to-download. Works on desktop browsers, mobile web,
-  // and native WebViews that have a download handler configured
-  // (Android: WebView.setDownloadListener; iOS: WKDownloadDelegate;
-  //  Capacitor: built-in once Filesystem/Browser plugins are present).
-  var triggerDownload=function(href, revokeAfter){
-    var a=document.createElement("a");
-    a.href=href;
-    a.download=fname;
-    a.rel="noopener";
-    a.style.display="none";
-    document.body.appendChild(a);
-    // Use a real MouseEvent — some WebViews ignore .click() on synthetic anchors
-    try{
-      a.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,view:window}));
-    }catch(_){
-      a.click();
-    }
-    document.body.removeChild(a);
-    if(revokeAfter){ setTimeout(function(){ URL.revokeObjectURL(href); },1500); }
+  var markSaved=function(){
+    resetBtn("✅ Saved!");
+    setTimeout(function(){ resetBtn(); },2500);
+  };
+  var markFailed=function(msg){
+    resetBtn();
+    if(typeof showToast==="function") showToast(msg||"Couldn't save — please try again",2800);
   };
 
-  setTimeout(function(){
+  // ── Native bridge detection ──
+  var tryNativeBridge=function(dataUrl){
+    // Pattern A: unified bridge
+    try{
+      if(window.SmartQAppBridge && typeof window.SmartQAppBridge.saveImage==="function"){
+        // Optional callback — bridge can call this to confirm/deny
+        window.SmartQAppBridge.onSaveComplete=function(ok,err){
+          if(ok!==false) markSaved();
+          else markFailed(err||"Save failed");
+        };
+        window.SmartQAppBridge.saveImage(dataUrl, fname);
+        // Safety net: if no callback in 4s, assume success
+        setTimeout(function(){
+          if(btn && btn.disabled){ markSaved(); }
+        },4000);
+        return true;
+      }
+    }catch(_){}
+    // Pattern B: iOS WKWebView raw script-message handler
+    try{
+      if(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.saveImage){
+        window.webkit.messageHandlers.saveImage.postMessage({data:dataUrl, filename:fname});
+        // No callback channel here by default — optimistic success after short delay
+        setTimeout(markSaved, 800);
+        return true;
+      }
+    }catch(_){}
+    // Pattern C: Android addJavascriptInterface
+    try{
+      if(window.AndroidBridge && typeof window.AndroidBridge.saveImage==="function"){
+        window.AndroidBridge.saveImage(dataUrl, fname);
+        setTimeout(markSaved, 800);
+        return true;
+      }
+    }catch(_){}
+    return false;
+  };
+
+  // ── Web Share API path (iOS WKWebView + most Android WebViews) ──
+  var tryShareSheet=function(done){
+    if(!cv.toBlob || typeof navigator.share!=="function" || typeof navigator.canShare!=="function"){
+      done(false); return;
+    }
+    cv.toBlob(function(blob){
+      if(!blob){ done(false); return; }
+      try{
+        var file=new File([blob], fname, {type:"image/png"});
+        if(!navigator.canShare({files:[file]})){ done(false); return; }
+        navigator.share({files:[file], title:"My SmartQ Planet Certificate"})
+          .then(function(){ done(true); })
+          .catch(function(err){
+            // User cancelling the sheet is not a failure — don't downgrade to next path
+            if(err && (err.name==="AbortError" || /cancel/i.test(err.message||""))){
+              done("cancelled");
+            } else {
+              done(false);
+            }
+          });
+      }catch(_){ done(false); }
+    },"image/png");
+  };
+
+  // ── Anchor download path (desktop + WebViews with download listener configured) ──
+  var anchorClick=function(href, revoke){
+    var a=document.createElement("a");
+    a.href=href; a.download=fname; a.rel="noopener"; a.style.display="none";
+    document.body.appendChild(a);
+    try{ a.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,view:window})); }
+    catch(_){ a.click(); }
+    document.body.removeChild(a);
+    if(revoke){ setTimeout(function(){ URL.revokeObjectURL(href); },1500); }
+  };
+  var tryAnchorDownload=function(done){
     try{
       if(cv.toBlob){
         cv.toBlob(function(blob){
           if(!blob){
-            // Blob creation failed — fall back to data URL
-            triggerDownload(cv.toDataURL("image/png"), false);
-            resetBtn("✅ Saved!");
-            setTimeout(function(){ resetBtn(); },2500);
+            try{ anchorClick(cv.toDataURL("image/png"), false); done(true); }
+            catch(_){ done(false); }
             return;
           }
-          var url=URL.createObjectURL(blob);
-          triggerDownload(url, true);
-          resetBtn("✅ Saved!");
-          setTimeout(function(){ resetBtn(); },2500);
+          try{
+            anchorClick(URL.createObjectURL(blob), true);
+            done(true);
+          }catch(_){ done(false); }
         },"image/png");
       } else {
-        // Very old WebView with no toBlob — data URL path
-        triggerDownload(cv.toDataURL("image/png"), false);
-        resetBtn("✅ Saved!");
-        setTimeout(function(){ resetBtn(); },2500);
+        anchorClick(cv.toDataURL("image/png"), false);
+        done(true);
       }
-    }catch(e){
-      // Absolute last resort: if anchor downloads are blocked AND
-      // we can reach the Web Share API, offer the native share sheet
-      // so the user can still get the file out. The press-and-hold
-      // preview is intentionally not used here.
-      try{
-        if(navigator.share && cv.toBlob && navigator.canShare){
-          cv.toBlob(function(blob){
-            if(!blob){ resetBtn(); return; }
-            var file=new File([blob], fname, {type:"image/png"});
-            if(navigator.canShare({files:[file]})){
-              navigator.share({files:[file], title:"My SmartQ Planet Certificate"})
-                .then(function(){ resetBtn(); })
-                .catch(function(){ resetBtn(); });
-            } else {
-              resetBtn();
-            }
-          },"image/png");
-        } else {
-          resetBtn();
-        }
-      }catch(e2){
-        resetBtn();
-      }
+    }catch(_){ done(false); }
+  };
+
+  setTimeout(function(){
+    var dataUrl=null;
+    try{ dataUrl=cv.toDataURL("image/png"); }catch(_){}
+
+    // STEP 1 — Native bridge if the app team has wired it
+    if(dataUrl && tryNativeBridge(dataUrl)){
+      return; // bridge handles button reset via markSaved / callback
     }
+
+    // STEP 2 — In-app WebView OR mobile: share sheet (anchor would silently fail in unconfigured WKWebView)
+    var onMobile=(typeof isMobileDevice==="function" && isMobileDevice());
+    var inApp=(typeof isInAppBrowser==="function" && isInAppBrowser());
+
+    if(onMobile || inApp){
+      tryShareSheet(function(result){
+        if(result===true){ markSaved(); return; }
+        if(result==="cancelled"){ resetBtn(); return; }   // user dismissed sheet — silent reset
+        // Share sheet unavailable → try anchor (works if Android WebView has setDownloadListener)
+        tryAnchorDownload(function(ok){
+          if(ok) markSaved();
+          else markFailed("Couldn't save — update the app or try in your browser");
+        });
+      });
+      return;
+    }
+
+    // STEP 3 — Desktop / regular browsers
+    tryAnchorDownload(function(ok){
+      if(ok) markSaved();
+      else markFailed();
+    });
   },600);
 }
 
