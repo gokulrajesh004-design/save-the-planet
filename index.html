@@ -4797,7 +4797,6 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
     </div>
     <div class="rcta">
       <div class="rquote">&ldquo;Be the change the planet needs.&rdquo;</div>
-      <button class="btnsh" onclick="doShare()">&#127279; Share My Impact</button>
       <button class="btnrt" onclick="doReset()">Try Again Tomorrow</button>
       <p class="return-hook">Play every day this week. Watch what your planet becomes.</p>
     </div>
@@ -5156,12 +5155,6 @@ function goResult(){
   goTo("sr");
 }
 
-function doShare(){
-  var n=gc(),lvl=gl(n);
-  var msg="I scored "+n+"/18 on the Carbon Footprint Bingo! "+lvl.ic+" I am a "+lvl.nm+". Be the change the planet needs. | Tick Your Impact by SmartQ";
-  if(navigator.share)navigator.share({title:"Tick Your Impact",text:msg});
-  else navigator.clipboard.writeText(msg).then(function(){alert("Copied! Share it with your team.");});
-}
 
 function startGame(){
   ticked={};_cur=5;_milestonesFired={};buildGrid();updateEngagement(0);
@@ -5480,41 +5473,73 @@ function drawCertificate(){
   ctx.fillText("thesmartq.com  \u00B7  Act to Impact  \u00B7  Environment Day",W/2,FT_Y);
 }
 
+function closeCertPreview(){var p=document.getElementById("cert-img-preview");if(p)p.remove();}
 function downloadCert(){
   var cv = document.getElementById("cert-canvas");
   if(!cv) return;
   var btn = document.getElementById("cert-dl-btn");
-  if(btn){ btn.textContent="Preparing..."; btn.disabled=true; }
-  
-  // Wait for async images (logo, character SVG) to finish drawing
-  setTimeout(function(){
-    try{
-      var dataUrl = cv.toDataURL("image/png");
-      // iOS Safari: can't programmatically download, open in new tab
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      if(isIOS){
-        // Show instructions then open
-        if(btn){ btn.textContent="Hold image to save"; btn.disabled=false; }
-        window.open(dataUrl,"_blank");
-      } else {
-        // Android / Desktop
-        var fname = (_certName&&_certName.length>0)
-          ? "SaveThePlanet_"+_certName.replace(/[^a-zA-Z0-9]/g,"_")+".png"
-          : "SaveThePlanet_Certificate.png";
-        var a = document.createElement("a");
-        a.href = dataUrl;
-        a.download = fname;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        if(btn){ btn.textContent="&#11015; Downloaded!"; btn.disabled=false; }
-        setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
-      }
-    }catch(e){
-      if(btn){ btn.innerHTML="&#11015; Download"; btn.disabled=false; }
-      alert("To save: press and hold the certificate image, then choose Save Image.");
+  if(btn){ btn.innerHTML="Saving..."; btn.disabled=true; }
+
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  var fname = (_certName&&_certName.length>0)
+    ? "SaveThePlanet_"+_certName.replace(/[^a-zA-Z0-9]/g,"_")+".png"
+    : "SaveThePlanet_Certificate.png";
+
+  function showPreview(dataUrl){
+    var prev = document.getElementById("cert-img-preview");
+    if(!prev){
+      prev = document.createElement("div");
+      prev.id = "cert-img-preview";
+      prev.style.cssText = "position:fixed;inset:0;z-index:19999;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:14px;";
+      prev.innerHTML = '<p style="color:#fff;font-size:13px;font-weight:600;text-align:center;font-family:DM Sans,sans-serif;margin:0">Press and hold the image, then tap <b>Save Image</b></p>'
+        + '<img id="cert-preview-img" style="max-width:100%;border-radius:12px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.5)" />'
+        + '<button onclick="closeCertPreview()" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:11px 30px;border-radius:100px;font-size:14px;font-family:DM Sans,sans-serif;cursor:pointer">Close</button>';
+      document.body.appendChild(prev);
     }
-  }, 800);
+    document.getElementById("cert-preview-img").src = dataUrl;
+    prev.style.display = "flex";
+    if(btn){ btn.innerHTML="&#11015; Download"; btn.disabled=false; }
+  }
+
+  function doDownload(){
+    // Redraw to ensure async images (logo) are painted
+    drawCertificate();
+
+    // Wait for logo/cert images to paint, then export
+    setTimeout(function(){
+      try{
+        if(isIOS || isSafari){
+          // iOS: show preview — programmatic download not possible
+          showPreview(cv.toDataURL("image/png"));
+        } else if(cv.toBlob){
+          // Android Chrome + Desktop: toBlob is more reliable than toDataURL
+          cv.toBlob(function(blob){
+            if(!blob){ showPreview(cv.toDataURL("image/png")); return; }
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url; a.download = fname;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a);
+            setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+            if(btn){ btn.innerHTML="✅ Saved!"; btn.disabled=false; }
+            setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
+          },"image/png");
+        } else {
+          // Fallback: dataURL direct download
+          var a = document.createElement("a");
+          a.href = cv.toDataURL("image/png"); a.download = fname;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          if(btn){ btn.innerHTML="✅ Saved!"; btn.disabled=false; }
+          setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
+        }
+      }catch(e){
+        showPreview(cv.toDataURL("image/png"));
+      }
+    }, 600);
+  }
+
+  doDownload();
 }
 
 
