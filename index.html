@@ -5473,73 +5473,111 @@ function drawCertificate(){
   ctx.fillText("thesmartq.com  \u00B7  Act to Impact  \u00B7  Environment Day",W/2,FT_Y);
 }
 
-function closeCertPreview(){var p=document.getElementById("cert-img-preview");if(p)p.remove();}
+function closeCertPreview(){
+  var p=document.getElementById("cert-img-preview");
+  if(p){ p.style.display="none"; }
+}
+
+function isInAppBrowser(){
+  var ua=navigator.userAgent||"";
+  // Known social/productivity in-app browsers
+  if(/Instagram|FBAN|FBAV|LinkedInApp|WhatsApp|Slack|Twitter|Line\/|MicroMessenger|Snapchat/i.test(ua)) return true;
+  // Android WebView: explicit wv flag OR missing Chrome build number
+  if(/Android/i.test(ua) && (/wv/i.test(ua) || !/Chrome\/\d/.test(ua))) return true;
+  // iOS native WebView (WKWebView): AppleWebKit present but no "Safari/" token
+  // React Native, Capacitor, Flutter all strip "Safari/" from the UA string
+  if(/iPhone|iPad|iPod/.test(ua) && /AppleWebKit/.test(ua) && !/Safari\//.test(ua)) return true;
+  // Capacitor or Cordova bridge present — definitely running inside native shell
+  if(typeof window.Capacitor !== "undefined" || typeof window.cordova !== "undefined") return true;
+  return false;
+}
+
+function isMobileDevice(){
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"");
+}
+
+function showCertPreview(dataUrl){
+  var prev=document.getElementById("cert-img-preview");
+  if(!prev){
+    prev=document.createElement("div");
+    prev.id="cert-img-preview";
+    prev.style.cssText="position:fixed;inset:0;z-index:19999;background:rgba(0,0,0,0.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;gap:14px;-webkit-overflow-scrolling:touch;overflow-y:auto;";
+    document.body.appendChild(prev);
+  }
+  prev.innerHTML=
+    '<p style="color:rgba(255,252,240,0.9);font-size:13px;font-weight:600;text-align:center;font-family:DM Sans,sans-serif;margin:0;line-height:1.5">Press &amp; hold the image,<br>then tap <strong>Save to Photos</strong> or <strong>Download Image</strong></p>'
+    +'<img id="cert-preview-img" style="max-width:100%;width:100%;border-radius:12px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.6)" />'
+    +'<button onclick="closeCertPreview()" style="background:rgba(255,255,255,0.12);color:rgba(255,252,240,0.85);border:1px solid rgba(255,255,255,0.2);padding:12px 36px;border-radius:100px;font-size:14px;font-family:DM Sans,sans-serif;cursor:pointer;flex-shrink:0">Close</button>';
+  document.getElementById("cert-preview-img").src=dataUrl;
+  prev.style.display="flex";
+}
 function downloadCert(){
-  var cv = document.getElementById("cert-canvas");
+  var cv=document.getElementById("cert-canvas");
   if(!cv) return;
-  var btn = document.getElementById("cert-dl-btn");
+  var btn=document.getElementById("cert-dl-btn");
   if(btn){ btn.innerHTML="Saving..."; btn.disabled=true; }
 
-  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var fname = (_certName&&_certName.length>0)
+  var onMobile=isMobileDevice();
+  var inApp=isInAppBrowser();
+  var fname=(_certName&&_certName.length>0)
     ? "SaveThePlanet_"+_certName.replace(/[^a-zA-Z0-9]/g,"_")+".png"
     : "SaveThePlanet_Certificate.png";
 
-  function showPreview(dataUrl){
-    var prev = document.getElementById("cert-img-preview");
-    if(!prev){
-      prev = document.createElement("div");
-      prev.id = "cert-img-preview";
-      prev.style.cssText = "position:fixed;inset:0;z-index:19999;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:14px;";
-      prev.innerHTML = '<p style="color:#fff;font-size:13px;font-weight:600;text-align:center;font-family:DM Sans,sans-serif;margin:0">Press and hold the image, then tap <b>Save Image</b></p>'
-        + '<img id="cert-preview-img" style="max-width:100%;border-radius:12px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.5)" />'
-        + '<button onclick="closeCertPreview()" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:11px 30px;border-radius:100px;font-size:14px;font-family:DM Sans,sans-serif;cursor:pointer">Close</button>';
-      document.body.appendChild(prev);
-    }
-    document.getElementById("cert-preview-img").src = dataUrl;
-    prev.style.display = "flex";
-    if(btn){ btn.innerHTML="&#11015; Download"; btn.disabled=false; }
-  }
+  // Redraw to ensure logo is painted
+  drawCertificate();
 
-  function doDownload(){
-    // Redraw to ensure async images (logo) are painted
-    drawCertificate();
+  setTimeout(function(){
+    try{
+      var dataUrl=cv.toDataURL("image/png");
 
-    // Wait for logo/cert images to paint, then export
-    setTimeout(function(){
-      try{
-        if(isIOS || isSafari){
-          // iOS: show preview — programmatic download not possible
-          showPreview(cv.toDataURL("image/png"));
-        } else if(cv.toBlob){
-          // Android Chrome + Desktop: toBlob is more reliable than toDataURL
+      if(onMobile || inApp){
+        // All mobile (including native WebViews that pass isInAppBrowser=false)
+        // Try Web Share API first — works great in native app WebViews
+        if(navigator.canShare && cv.toBlob){
           cv.toBlob(function(blob){
-            if(!blob){ showPreview(cv.toDataURL("image/png")); return; }
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.href = url; a.download = fname;
-            document.body.appendChild(a); a.click();
-            document.body.removeChild(a);
-            setTimeout(function(){ URL.revokeObjectURL(url); },1000);
-            if(btn){ btn.innerHTML="✅ Saved!"; btn.disabled=false; }
-            setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
+            if(!blob){ showCertPreview(dataUrl); if(btn){btn.innerHTML="&#11015; Download";btn.disabled=false;} return; }
+            var file=new File([blob], fname, {type:"image/png"});
+            if(navigator.canShare({files:[file]})){
+              navigator.share({files:[file], title:"My SmartQ Planet Certificate"})
+                .then(function(){ if(btn){btn.innerHTML="&#11015; Download";btn.disabled=false;} })
+                .catch(function(){ showCertPreview(dataUrl); if(btn){btn.innerHTML="&#11015; Download";btn.disabled=false;} });
+            } else {
+              showCertPreview(dataUrl);
+              if(btn){btn.innerHTML="&#11015; Download";btn.disabled=false;}
+            }
           },"image/png");
         } else {
-          // Fallback: dataURL direct download
-          var a = document.createElement("a");
-          a.href = cv.toDataURL("image/png"); a.download = fname;
+          // Fallback: show image preview for long-press save
+          showCertPreview(dataUrl);
+          if(btn){ btn.innerHTML="&#11015; Download"; btn.disabled=false; }
+        }
+
+      } else if(cv.toBlob){
+        // Desktop: toBlob → objectURL → anchor click
+        cv.toBlob(function(blob){
+          if(!blob){ showCertPreview(dataUrl); return; }
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement("a");
+          a.href=url; a.download=fname;
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(function(){ URL.revokeObjectURL(url); },1000);
           if(btn){ btn.innerHTML="✅ Saved!"; btn.disabled=false; }
           setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
-        }
-      }catch(e){
-        showPreview(cv.toDataURL("image/png"));
-      }
-    }, 600);
-  }
+        },"image/png");
 
-  doDownload();
+      } else {
+        // Last-resort fallback
+        var a=document.createElement("a");
+        a.href=dataUrl; a.download=fname;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        if(btn){ btn.innerHTML="✅ Saved!"; btn.disabled=false; }
+        setTimeout(function(){ if(btn) btn.innerHTML="&#11015; Download"; },2500);
+      }
+    }catch(e){
+      try{ showCertPreview(cv.toDataURL("image/png")); }catch(e2){}
+      if(btn){ btn.innerHTML="&#11015; Download"; btn.disabled=false; }
+    }
+  },600);
 }
 
 
