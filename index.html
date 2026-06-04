@@ -44,8 +44,10 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .ipill{background:rgba(255,255,255,0.12);color:rgba(255,252,240,0.85);font-size:10px;font-weight:700;
   letter-spacing:3px;padding:6px 14px;border-radius:100px;margin-bottom:14px;
   display:inline-block;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(8px)}
-
-
+.iplanet-slot{margin:0 auto 12px;width:56px;height:56px}
+.ih1{font-family:"Fraunces",serif;font-size:32px;font-weight:900;
+  color:rgba(255,255,255,1);letter-spacing:-.02em;line-height:1.05;
+  text-shadow:0 2px 24px rgba(0,0,0,0.85),0 1px 6px rgba(0,0,0,0.7)}
 .ih2{font-family:"Fraunces",serif;font-size:14px;font-weight:700;
   font-style:italic;color:rgba(160,230,100,1);margin:3px 0 10px;
   text-shadow:0 1px 12px rgba(0,0,0,0.8),0 0 24px rgba(0,0,0,0.6);letter-spacing:.02em}
@@ -192,7 +194,7 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .slvl.ach{background:rgba(74,122,32,0.22)}
 .slvl.cur{background:rgba(28,42,16,0.75);backdrop-filter:blur(8px)}
 .slvl.ahe{opacity:.22}
-
+.slvl-ic{font-size:17px;display:block;margin-bottom:3px}
 .slvl-nm{font-size:11px;font-weight:700;color:rgba(255,252,240,0.9);
   line-height:1.25;display:block}
 .slvl.cur .slvl-nm{color:var(--amber)}
@@ -209,7 +211,10 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 .rquote{font-family:"Fraunces",serif;font-size:21px;font-weight:700;
   font-style:italic;color:rgba(255,252,240,0.95);line-height:1.35;margin-bottom:18px;
   text-shadow:0 2px 16px rgba(0,0,0,0.4)}
-
+.btnsh{width:100%;background:rgba(255,252,240,0.95);color:var(--forest);border:none;
+  padding:14px;border-radius:100px;font-size:14px;font-weight:700;
+  font-family:"DM Sans",sans-serif;cursor:pointer;margin-bottom:9px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);transition:transform .12s}
 .btnsh:active{transform:scale(.97)}
 .btnrt{width:100%;background:rgba(255,255,255,0.1);color:rgba(240,232,208,0.7);
   border:1.5px solid rgba(255,255,255,0.2);padding:12px;
@@ -498,61 +503,6 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 #result-char svg{width:100%;height:100%;object-fit:contain}
 
 
-/* ── CERT BANNER ── */
-.cert-banner{
-  display:flex;align-items:center;gap:12px;
-  margin:0 18px 0;
-  padding:14px 16px;
-  background:linear-gradient(135deg,rgba(180,140,30,0.22) 0%,rgba(200,160,40,0.30) 50%,rgba(180,140,30,0.22) 100%);
-  border:1.5px solid rgba(200,170,50,0.45);
-  border-radius:18px;
-  position:relative;overflow:hidden;
-  animation:certBannerIn 0.6s cubic-bezier(0.34,1.2,0.64,1) 0.8s both;
-  box-shadow:0 4px 20px rgba(180,140,20,0.2),inset 0 1px 0 rgba(255,220,80,0.15);
-  cursor:pointer;
-}
-.cert-banner::before{
-  content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,220,80,0.12),transparent);
-  animation:shimmer 2.5s ease-in-out 1.4s infinite;
-}
-@keyframes shimmer{0%{left:-100%}100%{left:200%}}
-@keyframes certBannerIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-.cert-banner-emoji{
-  font-size:28px;flex-shrink:0;
-  animation:trophyBounce 1s cubic-bezier(0.34,1.56,0.64,1) 1.2s both;
-}
-@keyframes trophyBounce{0%{transform:scale(0)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
-.cert-banner-text{flex:1}
-.cert-banner-title{
-  font-size:14px;font-weight:700;
-  color:rgba(255,230,120,0.97);
-  line-height:1.2;margin-bottom:2px;
-  text-shadow:0 1px 6px rgba(0,0,0,0.4);
-}
-.cert-banner-sub{
-  font-size:11px;
-  color:rgba(255,220,100,0.55);
-  line-height:1.3;
-}
-.cert-banner-btn{
-  flex-shrink:0;
-  background:rgba(200,160,30,0.85);
-  color:#1A1000;
-  border:none;
-  padding:9px 16px;
-  border-radius:100px;
-  font-size:12px;font-weight:800;
-  font-family:"DM Sans",sans-serif;
-  cursor:pointer;
-  letter-spacing:0.02em;
-  box-shadow:0 3px 12px rgba(180,130,10,0.4);
-  transition:transform .12s,background .15s;
-  white-space:nowrap;
-}
-.cert-banner-btn:active{transform:scale(0.93)}
-
-
 .bph-smartq{
   font-size:10px;font-weight:500;
   color:rgba(255,252,240,0.28);
@@ -578,118 +528,10 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
 
 <!-- Globe BG -->
 
-<!-- Name Input Modal -->
-<div id="name-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(6,14,4,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:flex-end;justify-content:center;padding:0 20px 40px;">
-  <div style="width:100%;max-width:390px;background:rgba(15,25,10,0.96);border:1.5px solid rgba(180,200,100,0.25);border-radius:24px;padding:28px 22px 24px;text-align:center;">
-    <div style="font-size:32px;margin-bottom:12px">🏆</div>
-    <div style="font-family:Fraunces,serif;font-size:22px;font-weight:900;color:rgba(255,252,240,0.96);margin-bottom:6px">Your Certificate</div>
-    <div style="font-size:13px;color:rgba(240,230,200,0.5);margin-bottom:22px;line-height:1.6">Add your name to personalise it. If you skip, we will use your achievement title instead.</div>
-    <input id="cert-name-input" type="text" placeholder="What should we call you?" maxlength="40"
-      style="width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px 16px;font-size:15px;color:rgba(255,252,240,0.95);font-family:DM Sans,sans-serif;outline:none;margin-bottom:14px;-webkit-appearance:none;box-sizing:border-box"/>
-    <div style="display:flex;gap:10px">
-      <button onclick="skipName()" style="flex:1;background:rgba(255,255,255,0.07);color:rgba(240,230,200,0.6);border:1px solid rgba(255,255,255,0.12);padding:13px;border-radius:100px;font-size:13px;font-weight:600;font-family:DM Sans,sans-serif;cursor:pointer;">Skip</button>
-      <button onclick="generateCert()" style="flex:2;background:rgba(140,210,80,0.9);color:#0A1808;border:none;padding:13px;border-radius:100px;font-size:14px;font-weight:700;font-family:DM Sans,sans-serif;cursor:pointer;">Generate &#127942;</button>
-    </div>
-  </div>
-</div>
-
-<!-- Certificate Modal -->
-<div id="cert-overlay" style="display:none;position:fixed;inset:0;left:0;top:0;right:0;bottom:0;z-index:9999;background:rgba(6,14,4,0.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);flex-direction:column;align-items:center;justify-content:flex-start;">
-  <div style="width:100%;max-width:390px;display:flex;flex-direction:column;height:100%;padding:16px 16px 0;background:rgba(6,14,4,0.98);">
-    <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border-radius:16px;">
-      <canvas id="cert-canvas" style="width:100%;min-height:200px;display:block;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5)"></canvas>
-    </div>
-    <div style="flex-shrink:0;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;">
-      <button onclick="closeCert()" style="background:rgba(255,255,255,0.10);color:rgba(240,232,208,0.85);border:1px solid rgba(255,255,255,0.15);padding:13px 48px;border-radius:100px;font-size:14px;font-weight:600;font-family:DM Sans,sans-serif;cursor:pointer;">Close</button>
-    </div>
-  </div>
-</div>
 
 <div id="toast" style="position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:9999;background:rgba(140,210,80,0.95);color:#0A1808;font-family:DM Sans,sans-serif;font-size:13px;font-weight:700;padding:10px 20px;border-radius:100px;box-shadow:0 8px 24px rgba(0,0,0,0.3);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.2,0.64,1);pointer-events:none;white-space:nowrap;max-width:calc(100% - 40px);text-align:center"></div>
 
 
-<div id="sq-logo-store" style="display:none"><svg   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.8 33.1">
-  <defs>
-    <style>
-      .sq-cls-1 {
-        fill: #fcc62a;
-      }
-
-      .sq-cls-2 {
-        fill: #fff;
-      }
-
-      .sq-cls-3 {
-        fill: #f5b242;
-      }
-
-      .sq-cls-4 {
-        fill: #2c3031;
-      }
-
-      .sq-cls-5 {
-        fill: #fffef2;
-      }
-
-      .sq-cls-6 {
-        fill: #fec147;
-      }
-    </style>
-  </defs>
-  <g  >
-    <g>
-      <g>
-        <g>
-          <rect class="sq-cls-1" x=".02" y=".02" width="94.76" height="27.56" rx="13.78" ry="13.78"/>
-          <path class="sq-cls-2" d="M81,27.6H13.8c-3.69,0-7.15-1.44-9.76-4.04C1.44,20.95,0,17.48,0,13.8S1.44,6.65,4.04,4.04C6.65,1.44,10.11,0,13.8,0h67.2c3.69,0,7.15,1.44,9.76,4.04,2.61,2.61,4.04,6.07,4.04,9.76s-1.44,7.15-4.04,9.76c-2.61,2.61-6.07,4.04-9.76,4.04ZM13.8.04C10.12.04,6.67,1.47,4.07,4.07,1.47,6.67.04,10.12.04,13.8s1.43,7.13,4.03,9.73c2.6,2.6,6.05,4.03,9.73,4.03h67.2c3.68,0,7.13-1.43,9.73-4.03,2.6-2.6,4.03-6.05,4.03-9.73s-1.43-7.13-4.03-9.73C88.13,1.47,84.67.04,81,.04H13.8Z"/>
-        </g>
-        <g>
-          <path class="sq-cls-5" d="M31.24,11.85c.12,2.46-.65,4.58-2.37,6.35-.18.18-.17.26.03.4.56.38,1.1.78,1.65,1.17.2.14.26.28.08.49-.19.22-.35.46-.53.7-.22.28-.34.31-.65.08-.63-.44-1.24-.89-1.87-1.33-.08-.06-.17-.11-.25-.16-.05-.12-.12-.07-.19-.03-.72.41-1.51.65-2.32.81-.5.03-1,.06-1.51.09-.93-.07-1.83-.29-2.69-.66-.76-.41-1.5-.87-2.11-1.49-1.58-1.58-2.38-3.5-2.45-5.72,0-.3,0-.6.01-.9.3.9.97,1.38,1.86,1.61.05.61.24,1.18.49,1.73,1.71,3.75,6.35,4.73,9.26,1.76.95-.97,1.52-2.14,1.69-3.49.8-.23,1.44-.68,1.86-1.4Z"/>
-          <path class="sq-cls-4" d="M17.94,13.26c-.89-.22-1.56-.7-1.86-1.61-.2-.66-.4-1.32-.62-1.97-.06-.18-.2-.32-.34-.45-.36-.34-.33-.77-.31-1.21,0-.16.14-.15.24-.17.83-.15,1.65-.37,2.48-.47.05,0,.09-.03.14-.05.83-.05,1.65,0,2.47.1.43.08.88.13,1.3.25,1.95.57,3.85.21,5.75-.24.81-.13,1.62-.18,2.44-.11.76.15,1.52.28,2.26.49.21.06.55.02.55.31,0,.35.21.77-.21,1.05-.22.15-.31.39-.38.63-.21.68-.35,1.38-.61,2.04-.43.73-1.06,1.17-1.86,1.4-.21.03-.42.07-.63.09-1.62.13-3.17-.4-3.92-2.18-.17-.39-.27-.8-.43-1.19-.18-.44-.32-.5-.85-.49-.37,0-.41.3-.51.54-.04.1-.07.21-.1.32-.2.8-.62,1.48-1.17,2.08-.45.49-1.01.78-1.67.89-.73.12-1.44.07-2.16-.06ZM17.11,8.14c-.44.08-.78.31-.88.75-.1.43-.09.87.06,1.3.05.47.19.92.37,1.36.23.56.62.95,1.21,1.13.24.12.5.15.76.17,1.19.12,2.26-.13,3.02-1.13.43-.56.71-1.22.87-1.91.12-.5.08-.99-.39-1.3-.75-.5-1.6-.68-2.49-.66-.85,0-1.7.03-2.53.29ZM30.17,8.1c-.82-.21-1.65-.26-2.48-.24-.82-.02-1.6.16-2.3.59-.47.28-.61.73-.51,1.25.1.55.34,1.05.59,1.54.82,1.66,2.71,1.88,3.99,1.46.58-.13.98-.49,1.24-1,.2-.4.32-.84.39-1.28.14-.34.16-.7.16-1.06,0-.73-.33-1.12-1.07-1.25Z"/>
-          <path class="sq-cls-5" d="M75.81,9.21c.59,0,1.09.05,1.58.18,1.2.32,1.99,1.06,2.35,2.25.31,1.02.33,2.06.1,3.1-.3,1.31-1.1,2.19-2.37,2.63-.31.11-.31.11-.1.36.3.34.6.68.9,1.02.23.27.22.35-.05.55q-.45.34-.83-.1c-.41-.48-.83-.96-1.24-1.44-.11-.13-.22-.18-.39-.19-.43-.02-.86-.06-1.29-.17-1.58-.4-2.54-1.55-2.69-3.21-.07-.73-.06-1.45.1-2.16.37-1.61,1.45-2.58,3.1-2.76.3-.03.6-.08.82-.06ZM79.03,13.35c-.02-.23-.03-.48-.05-.73-.14-1.36-.87-2.23-2.12-2.49-.48-.1-.96-.1-1.44-.07-1.47.1-2.36.89-2.62,2.33-.13.71-.12,1.42.03,2.13.24,1.13.92,1.85,2.08,2.09.62.13,1.24.14,1.86.03,1.1-.2,1.81-.82,2.1-1.91.12-.44.14-.89.17-1.37Z"/>
-          <path class="sq-cls-4" d="M49.95,12.05c-.71,1.53-1.41,3.07-2.12,4.6-.08.16-.15.33-.23.49-.16.36-.26.4-.65.35-.16-.02-.18-.14-.23-.25-.82-1.67-1.63-3.34-2.45-5.02-.04-.09-.09-.18-.15-.29-.08.12-.05.23-.05.33,0,1.61,0,3.22,0,4.83,0,.36-.28.53-.6.38-.15-.07-.13-.21-.13-.34,0-.86,0-1.71,0-2.57,0-1.32,0-2.64,0-3.95,0-.18-.05-.4.21-.42.24-.02.49-.1.66.24.9,1.87,1.84,3.74,2.76,5.6.05.11.08.23.21.33.06-.11.11-.21.16-.31.87-1.87,1.74-3.73,2.59-5.61.15-.33.38-.27.62-.25.26.03.21.25.21.43,0,2.16,0,4.33,0,6.49,0,.29-.1.39-.39.39-.28,0-.37-.11-.37-.38,0-1.58,0-3.16,0-4.74,0-.11,0-.22,0-.32-.02,0-.05,0-.07,0Z"/>
-          <path class="sq-cls-5" d="M29.64,7.33c-.82-.06-1.63-.02-2.44.11-1.19-1-2.57-1.42-4.11-1.27-1.11.11-2.1.51-2.94,1.25-.82-.1-1.64-.15-2.47-.1,2.68-3.69,7.81-4.19,11.1-1,.32.31.62.63.86,1Z"/>
-          <path class="sq-cls-4" d="M59.91,13.82c0-1.09,0-2.17,0-3.26,0-.28.09-.4.38-.39,1.04.03,2.08-.05,3.11.04.7.06,1.27.36,1.49,1.08.24.78.12,1.49-.48,2.08-.3.29-.66.49-1.05.65q-.34.14-.12.45c.62.85,1.24,1.71,1.86,2.56.07.1.2.19.12.35-.08.16-.23.08-.35.1-.37.07-.58-.1-.78-.4-.62-.9-1.27-1.79-1.91-2.68-.05-.07-.11-.14-.15-.22-.16-.31-.05-.56.29-.62.41-.07.81-.18,1.17-.4.33-.2.57-.47.65-.87.15-.75-.19-1.28-.96-1.37-.76-.09-1.53-.02-2.3-.03-.19,0-.17.13-.17.25,0,.58,0,1.17,0,1.75,0,1.38,0,2.76,0,4.13,0,.43-.03.45-.4.45-.37,0-.39-.02-.39-.46,0-1.07,0-2.13,0-3.2Z"/>
-          <path class="sq-cls-4" d="M39.2,14.21c-.5-.03-1.01.01-1.5-.11-.81-.21-1.27-.76-1.31-1.6-.06-1.38.65-2.15,2.16-2.33,1.02-.12,2.03-.03,3.03.22.24.06.33.27.25.59-.07.24-.25.18-.42.13-1.03-.27-2.06-.39-3.11-.15-.83.19-1.19.69-1.12,1.5.04.49.3.79.78.91.22.05.44.06.66.06.5,0,1.01-.01,1.51,0,1.38.05,2.1.94,1.86,2.29-.17.98-.8,1.57-1.9,1.73-1.12.17-2.23.06-3.33-.2-.19-.04-.28-.35-.19-.63.07-.22.22-.18.39-.12.99.3,1.99.42,3.01.24.84-.15,1.26-.66,1.25-1.48,0-.61-.33-.98-.95-1.04-.36-.03-.72,0-1.09,0Z"/>
-          <path class="sq-cls-4" d="M55.29,11.13c-.13.1-.15.25-.21.37-.83,1.89-1.67,3.79-2.5,5.69-.11.26-.53.41-.76.27-.16-.1-.11-.23-.05-.37.47-1.02.93-2.05,1.4-3.07.54-1.19,1.09-2.37,1.61-3.57.12-.27.29-.27.52-.27.24,0,.42,0,.54.28.98,2.19,1.98,4.37,2.98,6.56.18.4.13.45-.31.48-.29.02-.45-.07-.56-.35-.23-.6-.52-1.18-.77-1.77-.08-.18-.17-.25-.38-.25-.78.01-1.55,0-2.33,0-.17,0-.37.04-.38-.22,0-.22.23-.5.41-.5.62,0,1.25,0,1.87,0,.36,0,.36,0,.22-.33-.41-.94-.83-1.88-1.24-2.81-.02-.04-.05-.08-.08-.13Z"/>
-          <path class="sq-cls-4" d="M20.63,19.77c.86.37,1.75.59,2.69.66.16.18.38.28.57.43.08.06.17.06.25,0,.23-.18.49-.29.69-.51.81-.16,1.59-.41,2.32-.81.07-.04.14-.09.19.03,0,.05,0,.11.02.15.25.41.1.77-.1,1.15-.48.93-1.15,1.71-1.87,2.46-.12.12-.16.09-.23-.04-.2-.36-.35-.72-.56-1.1-.18-.4-.37-.77-.58-1.24-.09.26-.23.43-.26.65,0,0,0,0,0,0-.13.2-.22.35-.32.6-.14.27-.24.48-.36.71-.3.55-.28.55-.72.1-.65-.67-1.2-1.4-1.63-2.24-.17-.33-.28-.64-.09-.98Z"/>
-          <path class="sq-cls-4" d="M67.9,14.13c0-.99,0-1.97,0-2.96,0-.23-.07-.29-.29-.28-.58.01-1.17,0-1.75,0-.28,0-.34-.13-.34-.37,0-.23.08-.35.33-.35,1.64,0,3.29,0,4.93,0,.26,0,.33.13.33.36,0,.25-.07.37-.35.37-.58-.01-1.17.01-1.75-.01-.28-.01-.33.09-.33.34,0,1.94,0,3.88,0,5.82,0,.39-.32.58-.66.41-.15-.08-.12-.22-.12-.34,0-1,0-1.99,0-2.99Z"/>
-          <path class="sq-cls-5" d="M29.45,12.7c.09-1.86-.5-3.47-1.76-4.84.84-.02,1.67.03,2.48.24.4.73.68,1.51.91,2.31-.07.45-.19.88-.39,1.28-.26.52-.66.87-1.24,1Z"/>
-          <path class="sq-cls-5" d="M19.64,7.86c-.85.91-1.41,1.96-1.65,3.18-.11.54-.13,1.09-.11,1.64-.58-.19-.98-.58-1.21-1.13-.18-.44-.32-.89-.37-1.36.23-.7.5-1.39.82-2.05.82-.25,1.67-.28,2.53-.29Z"/>
-          <path class="sq-cls-6" d="M24.11,21.81c.05-.1.05-.2,0-.29h0c.12.1.14.2,0,.3h0Z"/>
-          <path class="sq-cls-6" d="M24.11,21.52c-.08,0-.16,0-.24,0h0c.08-.07.16-.08.24,0,0,0,0,0,0,0Z"/>
-          <path class="sq-cls-6" d="M24.11,21.82c-.04.06-.09.05-.16.03.06-.01.11-.02.16-.04,0,0,0,0,0,0Z"/>
-          <path class="sq-cls-6" d="M23.81,21.57s-.02.06-.04.09c-.01-.03-.02-.06-.03-.09,0,0,0,0,0,0,.02,0,.05,0,.07,0,0,0,0,0,0,0Z"/>
-          <path class="sq-cls-6" d="M23.87,21.52s-.04.04-.06.06c0,0,0,0,0,0,.02-.02.04-.04.06-.06h0Z"/>
-          <path class="sq-cls-5" d="M24.01,20.91s-.62,1.15-.57,1.23c.16.24,1.04.25,1.13-.02.02-.06-.56-1.21-.56-1.21Z"/>
-          <path class="sq-cls-3" d="M24.01,21.97c-.14,0-.25-.11-.25-.25s.11-.25.25-.25.25.11.25.25-.11.25-.25.25ZM24.01,21.57c-.08,0-.15.07-.15.15s.07.15.15.15.15-.07.15-.15-.07-.15-.15-.15Z"/>
-        </g>
-      </g>
-      <g>
-        <path class="sq-cls-4" d="M18.72,32.54h-1.11l-.19.54h-.45l.95-2.65h.5l.95,2.65h-.46l-.19-.54ZM18.6,32.18l-.43-1.23-.43,1.23h.86Z"/>
-        <path class="sq-cls-4" d="M21.18,31.05c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17.28,0,.53.07.75.21.22.14.38.33.48.59h-.52c-.07-.14-.16-.24-.29-.31-.12-.07-.26-.1-.42-.1-.17,0-.33.04-.47.12s-.24.19-.32.34-.12.32-.12.51.04.37.12.51.18.26.32.34c.14.08.29.12.47.12.16,0,.3-.03.42-.1.12-.07.22-.17.29-.31h.52c-.1.25-.26.45-.48.59-.22.14-.47.21-.75.21-.25,0-.48-.06-.68-.17-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7Z"/>
-        <path class="sq-cls-4" d="M24.8,32.93c-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17s.48.06.68.17c.21.12.37.28.49.48.12.21.18.44.18.7s-.06.49-.18.7c-.12.21-.28.37-.49.48-.21.12-.43.17-.68.17s-.47-.06-.68-.17ZM25.95,32.61c.14-.08.24-.19.32-.34.08-.15.12-.32.12-.52s-.04-.37-.12-.51-.18-.26-.32-.34c-.14-.08-.29-.12-.47-.12s-.33.04-.47.12-.24.19-.32.34c-.08.15-.12.32-.12.51s.04.37.12.52c.08.15.18.26.32.34s.29.12.47.12.33-.04.47-.12Z"/>
-        <path class="sq-cls-4" d="M30.23,30.43v2.64h-.43v-1.81l-.81,1.81h-.3l-.81-1.81v1.81h-.43v-2.64h.47l.93,2.07.92-2.07h.46Z"/>
-        <path class="sq-cls-4" d="M32.75,31.6c-.06.12-.16.22-.3.29-.14.07-.32.11-.54.11h-.48v1.07h-.43v-2.64h.91c.2,0,.37.03.52.1.14.07.25.16.32.28.07.12.1.25.1.4,0,.13-.03.26-.1.38ZM32.28,31.54c.08-.07.12-.18.12-.32,0-.29-.16-.43-.49-.43h-.48v.86h.48c.16,0,.29-.04.37-.11Z"/>
-        <path class="sq-cls-4" d="M35.04,32.54h-1.11l-.19.54h-.45l.95-2.65h.5l.95,2.65h-.46l-.19-.54ZM34.92,32.18l-.43-1.23-.43,1.23h.86Z"/>
-        <path class="sq-cls-4" d="M36.68,33.01c-.14-.06-.25-.15-.33-.26-.08-.11-.12-.25-.12-.4h.46c.01.11.06.21.13.28.08.07.19.11.34.11s.27-.04.35-.11.13-.17.13-.28c0-.09-.03-.16-.08-.22-.05-.06-.12-.1-.19-.13-.08-.03-.18-.06-.32-.1-.17-.05-.31-.09-.42-.14-.11-.05-.2-.12-.28-.22-.08-.1-.11-.23-.11-.4,0-.15.04-.29.11-.4.08-.11.18-.2.32-.26s.3-.09.48-.09c.26,0,.47.06.63.19.16.13.25.3.27.53h-.48c0-.1-.05-.18-.14-.25s-.19-.1-.33-.1c-.12,0-.23.03-.3.1-.08.06-.12.15-.12.27,0,.08.02.15.07.2.05.05.11.09.19.12.08.03.18.06.31.1.17.05.32.1.43.14s.2.12.28.22c.08.1.12.23.12.4,0,.13-.04.26-.11.38-.07.12-.18.21-.32.29-.14.07-.3.11-.49.11-.18,0-.34-.03-.48-.09Z"/>
-        <path class="sq-cls-4" d="M39.17,33.01c-.14-.06-.25-.15-.33-.26-.08-.11-.12-.25-.12-.4h.46c.01.11.06.21.13.28.08.07.19.11.34.11s.27-.04.35-.11.13-.17.13-.28c0-.09-.03-.16-.08-.22-.05-.06-.12-.1-.19-.13-.08-.03-.18-.06-.32-.1-.17-.05-.31-.09-.42-.14-.11-.05-.2-.12-.28-.22-.08-.1-.11-.23-.11-.4,0-.15.04-.29.11-.4.08-.11.18-.2.32-.26s.3-.09.48-.09c.26,0,.47.06.63.19.16.13.25.3.27.53h-.48c0-.1-.05-.18-.14-.25s-.19-.1-.33-.1c-.12,0-.23.03-.3.1-.08.06-.12.15-.12.27,0,.08.02.15.07.2.05.05.11.09.19.12.08.03.18.06.31.1.17.05.32.1.43.14s.2.12.28.22c.08.1.12.23.12.4,0,.13-.04.26-.11.38-.07.12-.18.21-.32.29-.14.07-.3.11-.49.11-.18,0-.34-.03-.48-.09Z"/>
-        <path class="sq-cls-4" d="M44.36,31.19c-.07-.13-.16-.23-.29-.3-.12-.07-.26-.1-.42-.1-.17,0-.33.04-.47.12-.14.08-.24.19-.32.33-.08.14-.12.31-.12.5s.04.36.12.5c.08.15.18.26.32.34.14.08.29.12.47.12.24,0,.43-.07.57-.2.15-.13.24-.31.27-.54h-.99v-.35h1.46v.34c-.03.21-.1.39-.22.57-.12.17-.27.31-.46.41-.19.1-.4.15-.63.15-.25,0-.48-.06-.68-.17-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17.28,0,.53.07.75.21.22.14.38.33.48.59h-.52Z"/>
-        <path class="sq-cls-4" d="M46.95,33.08l-.61-1.06h-.33v1.06h-.43v-2.64h.91c.2,0,.37.04.52.11s.25.17.32.29c.07.12.1.25.1.4,0,.17-.05.33-.15.47s-.25.24-.46.29l.65,1.1h-.52ZM46.01,31.67h.48c.16,0,.28-.04.37-.12.08-.08.12-.19.12-.33s-.04-.24-.12-.32c-.08-.08-.2-.12-.37-.12h-.48v.89Z"/>
-        <path class="sq-cls-4" d="M48.7,32.93c-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17s.48.06.68.17c.21.12.37.28.49.48.12.21.18.44.18.7s-.06.49-.18.7c-.12.21-.28.37-.49.48s-.43.17-.68.17-.47-.06-.68-.17ZM49.84,32.61c.14-.08.24-.19.32-.34.08-.15.12-.32.12-.52s-.04-.37-.12-.51c-.08-.15-.18-.26-.32-.34-.14-.08-.29-.12-.47-.12s-.33.04-.47.12-.24.19-.32.34c-.08.15-.12.32-.12.51s.04.37.12.52c.08.15.18.26.32.34s.29.12.47.12.33-.04.47-.12Z"/>
-        <path class="sq-cls-4" d="M51.77,30.43v1.69c0,.2.05.35.16.45s.25.15.44.15.34-.05.44-.15c.11-.1.16-.25.16-.45v-1.69h.43v1.68c0,.22-.05.4-.14.55-.09.15-.22.26-.38.33-.16.07-.33.11-.52.11s-.36-.04-.52-.11c-.16-.07-.28-.19-.37-.33s-.14-.33-.14-.55v-1.68h.43Z"/>
-        <path class="sq-cls-4" d="M55.91,31.6c-.06.12-.16.22-.3.29-.14.07-.32.11-.54.11h-.48v1.07h-.43v-2.64h.91c.2,0,.37.03.52.1.14.07.25.16.32.28.07.12.1.25.1.4,0,.13-.03.26-.1.38ZM55.44,31.54c.08-.07.12-.18.12-.32,0-.29-.16-.43-.49-.43h-.48v.86h.48c.16,0,.29-.04.37-.11Z"/>
-        <path class="sq-cls-4" d="M57.83,31.05c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17.28,0,.53.07.75.21.22.14.38.33.48.59h-.52c-.07-.14-.16-.24-.29-.31-.12-.07-.26-.1-.42-.1-.17,0-.33.04-.47.12s-.24.19-.32.34-.12.32-.12.51.04.37.12.51.18.26.32.34c.14.08.29.12.47.12.16,0,.3-.03.42-.1.12-.07.22-.17.29-.31h.52c-.1.25-.26.45-.48.59-.22.14-.47.21-.75.21-.25,0-.48-.06-.68-.17-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7Z"/>
-        <path class="sq-cls-4" d="M61.45,32.93c-.21-.12-.37-.28-.49-.48-.12-.21-.18-.44-.18-.7s.06-.49.18-.7c.12-.21.28-.37.49-.48.21-.12.43-.17.68-.17s.48.06.68.17c.21.12.37.28.49.48.12.21.18.44.18.7s-.06.49-.18.7c-.12.21-.28.37-.49.48s-.43.17-.68.17-.47-.06-.68-.17ZM62.6,32.61c.14-.08.24-.19.32-.34.08-.15.12-.32.12-.52s-.04-.37-.12-.51c-.08-.15-.18-.26-.32-.34-.14-.08-.29-.12-.47-.12s-.33.04-.47.12-.24.19-.32.34c-.08.15-.12.32-.12.51s.04.37.12.52c.08.15.18.26.32.34s.29.12.47.12.33-.04.47-.12Z"/>
-        <path class="sq-cls-4" d="M66.88,30.43v2.64h-.43v-1.81l-.81,1.81h-.3l-.81-1.81v1.81h-.43v-2.64h.47l.93,2.07.92-2.07h.46Z"/>
-        <path class="sq-cls-4" d="M69.39,31.6c-.06.12-.16.22-.3.29-.14.07-.32.11-.54.11h-.48v1.07h-.43v-2.64h.91c.2,0,.37.03.52.1.14.07.25.16.32.28.07.12.1.25.1.4,0,.13-.03.26-.1.38ZM68.92,31.54c.08-.07.12-.18.12-.32,0-.29-.16-.43-.49-.43h-.48v.86h.48c.16,0,.29-.04.37-.11Z"/>
-        <path class="sq-cls-4" d="M71.69,32.54h-1.11l-.19.54h-.45l.95-2.65h.5l.95,2.65h-.46l-.19-.54ZM71.57,32.18l-.43-1.23-.43,1.23h.86Z"/>
-        <path class="sq-cls-4" d="M75.11,33.08h-.43l-1.3-1.97v1.97h-.43v-2.65h.43l1.3,1.97v-1.97h.43v2.65Z"/>
-        <path class="sq-cls-4" d="M77.83,30.43l-.87,1.69v.96h-.43v-.96l-.88-1.69h.48l.61,1.3.61-1.3h.48Z"/>
-      </g>
-    </g>
-  </g>
-</svg></div>
   <div id="char-awakened"><svg   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 465.3 437.93">
   <defs>
     <style>
@@ -4698,7 +4540,6 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
       <div class="iq-line2">was your day?</div>
     </div>
     <div class="icard">
-      <div class="sq-logo-top" id="intro-sq-logo"></div>
       <div class="ipill">Environment Day &nbsp;&middot;&nbsp; Act to Impact</div>
       <div class="ih2">Your choices &nbsp;&middot;&nbsp; Your footprint &nbsp;&middot;&nbsp; Your planet</div>
       <p class="isub">Did your day help the planet &mdash; or hurt it? Tick what you did today and watch the Earth respond in real time.</p>
@@ -4716,7 +4557,7 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
         <div class="icard2">
           <span class="ici2">&#127942;</span>
           <div class="icl2">Your Rank</div>
-          <div class="icd2">Certificate</div>
+          <div class="icd2">Habits</div>
         </div>
       </div>
       <button class="btnstart" onclick="startGame()">Find Out Now &rarr;</button>
@@ -4767,14 +4608,6 @@ body{font-family:"DM Sans",sans-serif;background:#060E04;color:var(--text);
       <div class="rbadge" id="rbadge">The Bystander</div>
       <div class="rbline" id="rbline">You showed up. Now it is time to start noticing.</div>
     <div class="rinsight" id="rinsight" style="margin-top:10px;font-size:13px;color:rgba(240,232,208,0.6);line-height:1.7;padding:0 6px;min-height:1px"></div>
-    </div>
-    <div class="cert-banner" id="cert-banner" onclick="showCertificate()">
-      <span class="cert-banner-emoji">&#127942;</span>
-      <div class="cert-banner-text">
-        <div class="cert-banner-title">Get My Certificate</div>
-        <div class="cert-banner-sub">Download your personalised achievement</div>
-      </div>
-      <button class="cert-banner-btn" onclick="showCertificate()">Generate &rarr;</button>
     </div>
     <div class="rsec">
       <div class="rstit">Daily Acts of Impact Scale</div>
@@ -5191,26 +5024,9 @@ window.addEventListener("resize",resizeGlobe);
 window.addEventListener("orientationchange",function(){setTimeout(resizeGlobe,200);});
 
 // Mount SmartQ logo into intro
-function mountSQLogo(){
-  var slots = ["intro-sq-logo"];
-  var store = document.getElementById("sq-logo-store");
-  if(!store) return;
-  slots.forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.innerHTML = store.innerHTML;
-  });
-}
 window.addEventListener("load", function(){
   // Mount SmartQ logo on intro
-  setTimeout(function(){
-    var sqStore=document.getElementById("sq-logo-store");
-    var introLogo=document.getElementById("intro-sq-logo");
-    if(sqStore&&introLogo) introLogo.innerHTML=sqStore.innerHTML;
-  },200);
-  // Preload logo image for certificate
-  setTimeout(preloadSQLogo, 500);
   initGlobe(); updGlobe(62);
-  mountSQLogo();
   setTimeout(function(){
     _cur=5; updGlobe(5);
     setTimeout(function(){ animGlobe(22,1200);
@@ -5223,242 +5039,35 @@ window.addEventListener("load", function(){
 
 
 // ── CERTIFICATE ──
-var _certName = "";
 
-var _sqLogoImg = null;
-var _sqLogoReady = false;
 
-function preloadSQLogo(){
-  if(_sqLogoReady) return;
-  var sqS = document.getElementById("sq-logo-store");
-  if(!sqS || typeof Blob === "undefined") return;
-  try{
-    var b = new Blob([sqS.innerHTML],{type:"image/svg+xml"});
-    var u = URL.createObjectURL(b);
-    _sqLogoImg = new Image();
-    _sqLogoImg.onload = function(){ _sqLogoReady = true; URL.revokeObjectURL(u); };
-    _sqLogoImg.onerror = function(){ URL.revokeObjectURL(u); };
-    _sqLogoImg.src = u;
-  }catch(e){}
-}
-
-function showCertificate(){
-  preloadSQLogo();
-  _certName = "";
-  var inp = document.getElementById("cert-name-input");
-  if(inp) inp.value = "";
-  var overlay = document.getElementById("name-overlay");
-  if(overlay){ overlay.style.display = "flex"; }
-}
-
-function skipName(){
-  _certName = "";
-  closeNameOverlay();
-  renderAndShowCert();
-}
-
-function generateCert(){
-  var inp = document.getElementById("cert-name-input");
-  _certName = inp ? inp.value.trim() : "";
-  closeNameOverlay();
-  renderAndShowCert();
-}
-
-function closeNameOverlay(){
-  var o = document.getElementById("name-overlay");
-  if(o) o.style.display = "none";
-}
-
-function renderAndShowCert(){
-  var overlay = document.getElementById("cert-overlay");
-  if(!overlay){ console.log("cert-overlay not found"); return; }
-  overlay.style.display = "flex";
-  overlay.style.visibility = "visible";
-  overlay.style.opacity = "1";
-  // Draw immediately + delayed for safety
-  setTimeout(function(){ drawCertificate(); }, 200);
-}
-
-function closeCert(){
-  var o = document.getElementById("cert-overlay");
-  if(o) o.style.display = "none";
-}
-
-function drawCertificate(){
-  var n=gc(), h=gh(), lvl=gl(n);
-  var cv=document.getElementById("cert-canvas");
-  if(!cv) return;
-  var DPR=2;
-  var W=Math.min((window.innerWidth||390)-32,380);
-  var H=Math.round(W*1.72);
-  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
-  cv.style.width=W+"px"; cv.style.height=H+"px";
-  var ctx=cv.getContext("2d");
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,cv.width,cv.height);
-  ctx.scale(DPR,DPR);
-  ctx.textAlign="center"; ctx.textBaseline="middle";
-
-  // ── ALL positions defined explicitly ──
-  var P=9;
-  var SQ_Y=P,          SQ_H=Math.round(H*0.058);  // SmartQ bar
-  var ED_Y=SQ_Y+SQ_H+6, ED_H=Math.round(H*0.030);  // Env Day pill
-  var PL_R=Math.round(H*0.095);                      // Planet radius
-  var PL_CY=ED_Y+ED_H+12+PL_R;                       // Planet centre
-  var LB_Y=PL_CY+PL_R+14;                            // Planet label
-  var D1_Y=LB_Y+18;                                  // Divider 1
-  var CA_Y=D1_Y+14;                                  // Cert of Achievement
-  var BAN_H=Math.round(H*0.056), BAN_Y=CA_Y+16;     // SAVE banner
-  var TC_Y=BAN_Y+BAN_H+18;                           // This certifies
-  var NM_FS=Math.round(W*0.060), NM_Y=TC_Y+30;      // Name
-  var PT_Y=NM_Y+NM_FS+12;                            // proudly ticked
-  var SC_R=Math.round(H*0.046), SC_Y=PT_Y+14+SC_R;  // Score
-  var O18_Y=SC_Y+SC_R+12;                            // out of 18
-  var BP_H=Math.round(H*0.042), BP_Y=O18_Y+11;      // Badge
-  var D2_Y=BP_Y+BP_H+16;                             // Divider 2
-  var QT_Y=D2_Y+16;                                  // Quote
-  var FT_Y=QT_Y+24;                                  // Footer
-
-  // ── HELPERS ──
-  function pill(x,y,w,ph,r){
-    r=Math.min(r,ph/2,w/2);
-    ctx.beginPath();
-    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-    ctx.lineTo(x+w,y+ph-r); ctx.quadraticCurveTo(x+w,y+ph,x+w-r,y+ph);
-    ctx.lineTo(x+r,y+ph); ctx.quadraticCurveTo(x,y+ph,x,y+ph-r);
-    ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
-  }
-  function diam(y){
-    ctx.save(); ctx.strokeStyle="rgba(252,198,42,.45)"; ctx.lineWidth=.7;
-    ctx.beginPath(); ctx.moveTo(W*.12,y); ctx.lineTo(W*.40,y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(W*.60,y); ctx.lineTo(W*.88,y); ctx.stroke();
-    ctx.fillStyle="#fcc62a";
-    [[W/2,2.8],[W/2-11,1.6],[W/2+11,1.6]].forEach(function(d){
-      ctx.save(); ctx.translate(d[0],y); ctx.rotate(Math.PI/4);
-      ctx.fillRect(-d[1],-d[1],d[1]*2,d[1]*2); ctx.restore();
-    });
-    ctx.restore();
-  }
-
-  // ── BACKGROUND ──
-  var bg=ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,"#FEFCF0"); bg.addColorStop(.4,"#F8F2DC");
-  bg.addColorStop(.8,"#F0E8C8"); bg.addColorStop(1,"#E8DCAC");
-  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-  var gw=ctx.createRadialGradient(W/2,H*.36,0,W/2,H*.36,W*.65);
-  gw.addColorStop(0,"rgba(252,198,42,.08)"); gw.addColorStop(1,"rgba(0,0,0,0)");
-  ctx.fillStyle=gw; ctx.fillRect(0,0,W,H);
-
-  // ── BORDERS ──
-  ctx.strokeStyle="#fcc62a"; ctx.lineWidth=2.5;
-  ctx.strokeRect(P-1,P-1,W-2*P+2,H-2*P+2);
-  ctx.strokeStyle="rgba(252,198,42,.25)"; ctx.lineWidth=.8;
-  ctx.strokeRect(P+3,P+3,W-2*P-6,H-2*P-6);
-  [[P-1,P-1,1,1],[W-P+1,P-1,-1,1],[P-1,H-P+1,1,-1],[W-P+1,H-P+1,-1,-1]].forEach(function(c){
-    var L=22; ctx.save(); ctx.strokeStyle="#fcc62a"; ctx.lineWidth=2.2;
-    ctx.beginPath(); ctx.moveTo(c[0],c[1]+c[3]*L); ctx.lineTo(c[0],c[1]); ctx.lineTo(c[0]+c[2]*L,c[1]); ctx.stroke();
-    ctx.fillStyle="#fcc62a";
-    ctx.save(); ctx.translate(c[0]+c[2]*4,c[1]+c[3]*4); ctx.rotate(Math.PI/4);
-    ctx.fillRect(-2.2,-2.2,4.4,4.4); ctx.restore(); ctx.restore();
-  });
-
-  // ── SMARTQ YELLOW HEADER ──
-  var hg=ctx.createLinearGradient(0,SQ_Y,0,SQ_Y+SQ_H);
-  hg.addColorStop(0,"#fcc62a"); hg.addColorStop(1,"#f0aa30");
-  ctx.fillStyle=hg; ctx.fillRect(P-1,SQ_Y,W-2*P+2,SQ_H);
-  if(_sqLogoReady&&_sqLogoImg){
-    var lW=Math.round(W*.28), lH=Math.round(lW*33.1/94.8);
-    if(lH>SQ_H-6){lH=SQ_H-6; lW=Math.round(lH*94.8/33.1);}
-    ctx.drawImage(_sqLogoImg,W/2-lW/2,SQ_Y+(SQ_H-lH)/2,lW,lH);
-  } else {
-    ctx.fillStyle="#2c3031"; ctx.font="700 "+Math.round(W*.036)+"px DM Sans,sans-serif";
-    ctx.fillText("SmartQ",W/2,SQ_Y+SQ_H/2);
-  }
-
-  // ── ENVIRONMENT DAY PILL ──
-  var eW=Math.round(W*.74), eX=(W-eW)/2;
-  ctx.fillStyle="rgba(44,48,49,.07)"; pill(eX,ED_Y,eW,ED_H,ED_H/2); ctx.fill();
-  ctx.strokeStyle="rgba(44,48,49,.18)"; ctx.lineWidth=.7; pill(eX,ED_Y,eW,ED_H,ED_H/2); ctx.stroke();
-  ctx.fillStyle="rgba(44,48,49,.55)"; ctx.font="600 "+Math.round(W*.016)+"px DM Sans,sans-serif";
-  ctx.fillText("\u2605  ENVIRONMENT DAY  \u00B7  ACT TO IMPACT  \u2605",W/2,ED_Y+ED_H/2);
-
-  // ── PLANET (large, centred hero) ──
-  // Glow rings
-  ctx.beginPath(); ctx.arc(W/2,PL_CY,PL_R+10,0,Math.PI*2);
-  ctx.strokeStyle="rgba(80,160,255,.08)"; ctx.lineWidth=10; ctx.stroke();
-  ctx.beginPath(); ctx.arc(W/2,PL_CY,PL_R+4,0,Math.PI*2);
-  ctx.strokeStyle="rgba(80,160,255,.15)"; ctx.lineWidth=5; ctx.stroke();
-  ctx.beginPath(); ctx.arc(W/2,PL_CY,PL_R+1,0,Math.PI*2);
-  ctx.strokeStyle="rgba(252,198,42,.5)"; ctx.lineWidth=2; ctx.stroke();
-  // Planet
-  var ec=mkEarth(h);
-  ctx.save(); ctx.beginPath(); ctx.arc(W/2,PL_CY,PL_R,0,Math.PI*2); ctx.clip();
-  ctx.drawImage(ec,W/2-PL_R,PL_CY-PL_R,PL_R*2,PL_R*2); ctx.restore();
-  ctx.beginPath(); ctx.arc(W/2,PL_CY,PL_R,0,Math.PI*2);
-  ctx.strokeStyle="#fcc62a"; ctx.lineWidth=2; ctx.stroke();
-  // Planet label
-  ctx.fillStyle="rgba(44,48,49,.45)"; ctx.font="600 "+Math.round(W*.018)+"px DM Sans,sans-serif";
-  ctx.fillText((gs(h).nm||"Earth Today"),W/2,LB_Y);
-
-  diam(D1_Y);
-
-  // ── CERT OF ACHIEVEMENT ──
-  ctx.fillStyle="rgba(44,48,49,.30)"; ctx.font="600 "+Math.round(W*.017)+"px DM Sans,sans-serif";
-  ctx.fillText("C E R T I F I C A T E   O F   A C H I E V E M E N T",W/2,CA_Y);
-
-  // ── SAVE THE PLANET BANNER ──
-  var bng=ctx.createLinearGradient(W*.05,BAN_Y,W*.95,BAN_Y);
-  bng.addColorStop(0,"#162E0C"); bng.addColorStop(.5,"#2C5218"); bng.addColorStop(1,"#162E0C");
-  ctx.fillStyle=bng; pill(W*.05,BAN_Y,W*.90,BAN_H,BAN_H/2); ctx.fill();
-  ctx.strokeStyle="rgba(140,200,70,.45)"; ctx.lineWidth=1.5; pill(W*.05,BAN_Y,W*.90,BAN_H,BAN_H/2); ctx.stroke();
-  ctx.fillStyle="rgba(255,252,240,.97)"; ctx.font="900 "+Math.round(W*.050)+"px DM Sans,sans-serif";
-  ctx.fillText("SAVE THE PLANET",W/2,BAN_Y+BAN_H/2);
-
-  // ── THIS CERTIFIES + NAME ──
-  ctx.fillStyle="rgba(44,48,49,.38)"; ctx.font=Math.round(W*.020)+"px DM Sans,sans-serif";
-  ctx.fillText("This certifies that",W/2,TC_Y);
-  var fb={"0":"A Cafeteria Explorer","5":"A Conscious Diner","10":"A Green Champion","14":"A Planet Guardian"};
-  var fk=n>=14?"14":n>=10?"10":n>=5?"5":"0";
-  var dn=(typeof _certName==="string"&&_certName.trim().length>0)?_certName.trim():fb[fk];
-  ctx.fillStyle="#1A1000"; ctx.font="700 "+NM_FS+"px DM Sans,sans-serif";
-  while(ctx.measureText(dn).width>W-40&&NM_FS>13){NM_FS--; ctx.font="700 "+NM_FS+"px DM Sans,sans-serif";}
-  ctx.fillText(dn,W/2,NM_Y);
-  var nw=ctx.measureText(dn).width;
-  var ulg=ctx.createLinearGradient(W/2-nw/2,0,W/2+nw/2,0);
-  ulg.addColorStop(0,"rgba(252,198,42,0)"); ulg.addColorStop(.5,"rgba(252,198,42,.75)"); ulg.addColorStop(1,"rgba(252,198,42,0)");
-  ctx.strokeStyle=ulg; ctx.lineWidth=1.4;
-  ctx.beginPath(); ctx.moveTo(W/2-nw/2,NM_Y+NM_FS*.38); ctx.lineTo(W/2+nw/2,NM_Y+NM_FS*.38); ctx.stroke();
-
-  // ── PROUDLY TICKED + SCORE ──
-  ctx.fillStyle="rgba(44,48,49,.36)"; ctx.font=Math.round(W*.018)+"px DM Sans,sans-serif";
-  ctx.fillText("proudly ticked",W/2,PT_Y);
-  ctx.beginPath(); ctx.arc(W/2,SC_Y,SC_R+6,0,Math.PI*2);
-  ctx.strokeStyle="rgba(252,198,42,.10)"; ctx.lineWidth=6; ctx.stroke();
-  ctx.beginPath(); ctx.arc(W/2,SC_Y,SC_R+2,0,Math.PI*2);
-  ctx.strokeStyle="rgba(252,198,42,.28)"; ctx.lineWidth=2.5; ctx.stroke();
-  ctx.fillStyle="rgba(252,198,42,.12)"; ctx.beginPath(); ctx.arc(W/2,SC_Y,SC_R,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle="#fcc62a"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(W/2,SC_Y,SC_R,0,Math.PI*2); ctx.stroke();
-  ctx.fillStyle="#1A1000"; ctx.font="900 "+Math.round(SC_R*1.35)+"px DM Sans,sans-serif";
-  ctx.fillText(""+n,W/2,SC_Y);
-  ctx.fillStyle="rgba(44,48,49,.36)"; ctx.font="600 "+Math.round(W*.018)+"px DM Sans,sans-serif";
-  ctx.fillText("out of 18 sustainable habits",W/2,O18_Y);
-
-  // ── BADGE PILL ──
-  var bg3=ctx.createLinearGradient(W*.10,BP_Y,W*.90,BP_Y);
-  bg3.addColorStop(0,"#162E0C"); bg3.addColorStop(.5,"#2A5218"); bg3.addColorStop(1,"#162E0C");
-  ctx.fillStyle=bg3; pill(W*.10,BP_Y,W*.80,BP_H,BP_H/2); ctx.fill();
-  ctx.strokeStyle="rgba(140,200,70,.5)"; ctx.lineWidth=1.2; pill(W*.10,BP_Y,W*.80,BP_H,BP_H/2); ctx.stroke();
-  ctx.fillStyle="rgba(220,255,160,.97)"; ctx.font="700 "+Math.round(W*.030)+"px DM Sans,sans-serif";
-  ctx.fillText(lvl.ic+"  "+lvl.nm,W/2,BP_Y+BP_H/2);
-
-  diam(D2_Y);
-
-  // ── QUOTE + FOOTER ──
-  ctx.fillStyle="rgba(44,48,49,.45)"; ctx.font="italic "+Math.round(W*.020)+"px DM Sans,sans-serif";
-  ctx.fillText("\u201CBe the change the planet needs.\u201D",W/2,QT_Y);
-  ctx.fillStyle="rgba(44,48,49,.25)"; ctx.font="500 "+Math.round(W*.015)+"px DM Sans,sans-serif";
-  ctx.fillText("thesmartq.com  \u00B7  Act to Impact  \u00B7  Environment Day",W/2,FT_Y);
-}
+// ──────────────────────────────────────────────────────────────────
+// CERTIFICATE DOWNLOAD
+// Escalation ladder:
+//   1. Native bridge (if app team has injected it) → instant one-tap save
+//   2. Web Share API (iOS WKWebView + modern Android WebView)      → share sheet → Save to Photos
+//   3. Anchor download (desktop + WebViews with download listener) → direct save
+//   4. Hard fail with a toast (never the press-and-hold overlay, never a fake "✅ Saved!")
+//
+// Native bridge contract (for the iOS / Android app teams):
+//   Provide ANY ONE of the following on `window`, set before the page is rendered:
+//
+//   (a) window.SmartQAppBridge.saveImage(dataUrlOrBase64, filename)
+//       — preferred unified interface. Implement on both platforms.
+//
+//   (b) iOS WKWebView raw:
+//       webView.configuration.userContentController.add(handler, name: "saveImage")
+//       JS will call: window.webkit.messageHandlers.saveImage.postMessage({data, filename})
+//
+//   (c) Android WebView raw:
+//       webView.addJavascriptInterface(bridge, "AndroidBridge")
+//       with method: @JavascriptInterface fun saveImage(dataUrl: String, filename: String)
+//
+//   The bridge should: decode the data URL → write to Photos/Pictures →
+//   call back via window.SmartQAppBridge.onSaveComplete(ok, errorMsg) if it wants
+//   the JS to reflect success/failure. If no callback comes within 4s the JS
+//   assumes success and resets the button — so the bridge SHOULD call back.
+// ──────────────────────────────────────────────────────────────────
 
 
 // ── ENGAGEMENT HELPERS ──
@@ -5501,7 +5110,6 @@ var PILL_MSGS = [
   "Check Your Score →",
   "Reveal Your Impact →",
   "See What You Did →",
-  "Unlock Your Certificate →",
   "Claim Your Planet →"
 ];
 
